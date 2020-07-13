@@ -1,5 +1,7 @@
 package Webmobile.automation;
 import java.io.File;
+import io.appium.java_client.AppiumDriver;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -16,28 +18,38 @@ import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 public class basepage {
-	AndroidDriver<MobileElement> driver;
+	//AndroidDriver<MobileElement> driver;
+	AppiumDriver<MobileElement> driver = null;
 
 @Test
 
-	public AndroidDriver<MobileElement> setup() throws MalformedURLException
+	public AppiumDriver<MobileElement> setup() throws MalformedURLException, InterruptedException
 	{
 	try{
 	
 	DesiredCapabilities caps = new DesiredCapabilities();
-	caps.setCapability(MobileCapabilityType.DEVICE_NAME, "Pixel_3a_XL_API_27");
-	caps.setCapability(MobileCapabilityType.PLATFORM_NAME, "ANDROID");
-	caps.setCapability(MobileCapabilityType.UDID, "emulator-5554");
-	caps.setCapability(MobileCapabilityType.PLATFORM_VERSION, "8.1");
-	caps.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 20000);
-	caps.setCapability(AndroidMobileCapabilityType.APP_PACKAGE,"com.android.chrome");
-	 //caps.setCapability(MobileCapabilityType.BROWSER_NAME, "BROWSER");
-	caps.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, "org.chromium.chrome.browser.ChromeTabbedActivity");
+	//caps.setCapability("deviceName", "Pixel_3a_XL_API_27");
+	caps.setCapability("deviceName", "Le Max2");
+	caps.setCapability("platformVersion", "6.0.1");
+	caps.setCapability("udid", "1ece6047");
+	caps.setCapability("platformName", "Android");
+	caps.setCapability(CapabilityType.BROWSER_NAME, "Chrome");
+	//caps.setCapability("udid", "emulator-5554");
+	//caps.setCapability("platformVersion", "8.1.0");
+	caps.setCapability("noReset", true);
+	caps.setCapability( "automationName", "UiAutomator1");
+	//caps.setCapability("appPackage","com.android.chrome");
+	//caps.setCapability("appActivity", "com.google.android.apps.chrome.Main");
 	caps.setCapability("–session-override",true);
+	caps.setCapability("skipServerInstallation",true);
+	//caps.setCapability("adbExecTimeout",9000);
 	URL url = new URL("http://0.0.0.0:4723/wd/hub");
-	driver =  new AndroidDriver<MobileElement>(url,caps);
+	driver = new AndroidDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), caps);
+	driver.get("https://trello.com/login");
+	driver.manage().timeouts().implicitlyWait(500, TimeUnit.SECONDS);
+	driver.findElementByXPath("//input[@id='login']").click();
+	//Thread.sleep(100);
 	System.out.println("Application started");
-	driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 	} catch (MalformedURLException e) {
 		// TODO Auto-generated catch block
 		System.out.println(e.getCause());
@@ -51,7 +63,6 @@ public class basepage {
 
 	
 }
-
 
 
 
